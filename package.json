@@ -1,0 +1,23 @@
+{
+  "name": "mdtojson",
+  "version": "0.1.0",
+  "description": "Parse tables in Markdown file to JSON.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EstevezCarlos/mdtojson.git"
+  },
+  "keywords": [
+    "Markdown",
+    "JSON"
+  ],
+  "author": "Chuck Cartwright",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/EstevezCarlos/mdtojson/issues"
+  },
+  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme"
+}
