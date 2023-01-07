@@ -12,10 +12,12 @@
   },
   "keywords": [
     "Markdown",
-    "JSON"
+    "JSON",
+    "parser"
   ],
   "author": "Chuck Cartwright",
   "license": "GPL-3.0-only",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/EstevezCarlos/mdtojson/issues"
   },
