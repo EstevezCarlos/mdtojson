@@ -1,5 +1,4 @@
-// import fs from 'fs';
-const fs = require('fs')
+import fs from 'fs';
 
 const roundUpToPowerOf10 = (number, power = 0) =>
   (number < (10 ** power))
@@ -67,7 +66,7 @@ const markdownTableToJson = (table) => {
   return data;
 }
 
-const mttj = {
+export const mttj = {
 
   parseString(markdown) {
     const tables = extractTablesAndHeaders(markdown)
@@ -81,3 +80,5 @@ const mttj = {
     return this.parseString(markdown)
   }
 }
+
+export default mttj

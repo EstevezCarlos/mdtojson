@@ -8,3 +8,7 @@ It takes markdown file or script and convert it to javascript object.
 Because sometimes convienience is more important than scalability.
 Not every webapp needs to be big.
 Not every company needs to maintain complex databese.
+
+## To do..
+- make async file read method.
+- clean comments before processing.

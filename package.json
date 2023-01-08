@@ -1,6 +1,6 @@
 {
   "name": "mttj",
-  "version": "0.1.1",
+  "version": "0.1.8",
   "description": "Parse tables in Markdown file to JSON.",
   "main": "app.js",
   "scripts": {
@@ -17,18 +17,12 @@
   ],
   "author": "Chuck Cartwright",
   "license": "GPL-3.0-only",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/EstevezCarlos/mdtojson/issues"
   },
   "homepage": "https://github.com/EstevezCarlos/mdtojson#readme",
   "dependencies": {
     "fs": "^0.0.1-security"
-  },
-  "devDependencies": {
-    "eslint": "^8.31.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.6.0",
-    "eslint-plugin-promise": "^6.1.1"
   }
 }
