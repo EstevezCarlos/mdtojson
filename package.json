@@ -1,5 +1,5 @@
 {
-  "name": "mdtojson",
+  "name": "mttj",
   "version": "0.1.0",
   "description": "Parse tables in Markdown file to JSON.",
   "main": "app.js",

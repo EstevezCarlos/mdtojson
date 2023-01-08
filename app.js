@@ -66,7 +66,7 @@ const markdownTableToJson = (table) => {
   return data;
 }
 
-export const mdToJson = {
+export const mttj = {
 
   parseString(markdown) {
     const tables = extractTablesAndHeaders(markdown)
@@ -81,4 +81,4 @@ export const mdToJson = {
   }
 }
 
-export default mdToJson
+export default mttj
