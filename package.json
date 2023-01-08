@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/EstevezCarlos/mdtojson/issues"
   },
-  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme"
+  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
 }
