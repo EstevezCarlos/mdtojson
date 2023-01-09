@@ -1,13 +1,13 @@
-# mttj
-**M**arkdown **t**able **t**o **J**SON
+# MTTJ
+**M**arkdown **T**able **T**o **J**SON
 
 ## What does it do?
-It takes markdown file or script and convert it to javascript object.
+MTTJ takes markdown file or script and convert it to JavaScript object.
 
 ## Why?
-Because sometimes convienience is more important than scalability.
-Not every webapp needs to be big.
-Not every company needs to maintain complex databese.
+Because sometimes replicability is more important than scalability.
+Not every web app needs to be big.
+Not every company needs to maintain database.
 
 ## To do..
 - create async file read method
@@ -16,7 +16,7 @@ Not every company needs to maintain complex databese.
 
 ## Patch Notes
 v 0.1.9
-- Comments `\<!--  --\>` are removed before processing
-- By defaut markdown with single table is unpacked
-- By defauld table with single row is unpacked
-  
+- Comments `<!--  -->` are removed before processing
+- By default markdown with single table is unpacked
+- By default table with single row is unpacked
+- Fixed some minor bugs
