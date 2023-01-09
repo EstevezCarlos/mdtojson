@@ -32,16 +32,45 @@ const md02 = `
 | Cell 1   | Cell 2   | Cell 3   |
 `;
 
+
+const md03 = `
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+`;
+
+const md03b = `| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |`;
+
+const md03c = `| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |<!--`;
+
 const objF00 = mttj.parseFileSync('./test/00.md')
 const objF01 = mttj.parseFileSync('./test/01.md')
 const objF02 = mttj.parseFileSync('./test/02.md')
+const objF03 = mttj.parseFileSync('./test/03.md')
+const objF03c = mttj.parseFileSync('./test/03c.md')
 const objS00 = mttj.parseString(md00)
 const objS01 = mttj.parseString(md01)
 const objS02 = mttj.parseString(md02)
-// console.log(objS00)
-// console.log(objS01)
-console.log(objS02)
-console.log(objF02)
-console.log(JSON.stringify(objF00) == JSON.stringify(objS00));
-console.log(JSON.stringify(objF01) == JSON.stringify(objS01));
-console.log(JSON.stringify(objF02) == JSON.stringify(objS02));
+const objS03 = mttj.parseString(md03)
+const objS03b = mttj.parseString(md03b)
+const objS03c = mttj.parseString(md03c)
+// console.log('objS00:', objS00)
+// console.log('objS01:', objS01)
+// console.log('objS02:', objS02)
+// console.log('objS03:', objS03)
+// console.log('objS03b:', objS03b)
+console.log('objS03c:', objS03c)
+// console.log('objF00:', objF00)
+// console.log('objF01:', objF01)
+// console.log('objF02:', objF02)
+// console.log('objF03:', objF03)
+// console.log(JSON.stringify(objF00) == JSON.stringify(objS00));
+// console.log(JSON.stringify(objF01) == JSON.stringify(objS01));
+// console.log(JSON.stringify(objF02) == JSON.stringify(objS02));
+// console.log(JSON.stringify(objF03) == JSON.stringify(objS03));
+console.log(JSON.stringify(objF03) == JSON.stringify(objS03b));
+console.log(JSON.stringify(objF03c) == JSON.stringify(objS03c));

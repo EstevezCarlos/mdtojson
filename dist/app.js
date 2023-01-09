@@ -1,18 +1,10 @@
 import fs from 'fs';
 
-
-// const countTables = (md) => md
-//   .split('\n')
-//   .map((line) => line[0])
-//   .join('')
-//   .replace(/[^|]/g, ' ')
-//   .split(' ')
-//   .filter((x) => x)
-//   .length;
-
 const countTables = (md) => ((arr) => (arr === null ? 0 : arr.length))(md.match(/^\s*\|.*\|\s*$(?:(?:.|\n)*?)^\s*$/gm));
 
 const ceilToPowOf10 = (i, pow = 0) => ((i < (10 ** pow)) ? pow : ceilToPowOf10(i, pow + 1));
+
+const removeComments = (md) => `\n${md.replace(/<!--[\s\S]*?-->/g, '').replace('<!--', '')}\n`;
 
 const extractTablesAndHeaders = (md) => {
   const lines = md.split('\n');
@@ -70,7 +62,7 @@ export const mttj = {
   // else, return JSON containg multiple objects
   // each array containing only one lement is unpacked
   parseString(md, unpack = true, unpackTables = true, silent = true) {
-    const uncommented = md.replace(/<!--[\s\S]*?-->/g, '');
+    const uncommented = removeComments(md);
     const tables = extractTablesAndHeaders(uncommented);
     const obj = {};
     Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables); });
