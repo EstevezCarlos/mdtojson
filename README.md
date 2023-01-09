@@ -10,5 +10,13 @@ Not every webapp needs to be big.
 Not every company needs to maintain complex databese.
 
 ## To do..
-- make async file read method.
-- clean comments before processing.
+- create async file read method
+- create filter method
+- make optional type interpretation
+
+## Patch Notes
+v 0.1.9
+- Comments `\<!--  --\>` are removed before processing
+- By defaut markdown with single table is unpacked
+- By defauld table with single row is unpacked
+  
