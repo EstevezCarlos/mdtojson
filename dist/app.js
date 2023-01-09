@@ -1,19 +1,22 @@
 import fs from 'fs';
 
+
+// const countTables = (md) => md
+//   .split('\n')
+//   .map((line) => line[0])
+//   .join('')
+//   .replace(/[^|]/g, ' ')
+//   .split(' ')
+//   .filter((x) => x)
+//   .length;
+
+const countTables = (md) => ((arr) => (arr === null ? 0 : arr.length))(md.match(/^\s*\|.*\|\s*$(?:(?:.|\n)*?)^\s*$/gm));
+
 const ceilToPowOf10 = (i, pow = 0) => ((i < (10 ** pow)) ? pow : ceilToPowOf10(i, pow + 1));
 
-const countTables = (markdown) => markdown
-  .split('\n')
-  .map((line) => line[0])
-  .join('')
-  .replace(/[^|]/g, ' ')
-  .split(' ')
-  .filter((x) => x)
-  .length;
-
-const extractTablesAndHeaders = (markdown) => {
-  const lines = markdown.split('\n');
-  const tableNumberLength = ceilToPowOf10(countTables(markdown));
+const extractTablesAndHeaders = (md) => {
+  const lines = md.split('\n');
+  const tableNumberLength = ceilToPowOf10(countTables(md));
   const tables = {};
   let inTable = false;
   let currentTable = '';
@@ -71,8 +74,8 @@ export const mttj = {
     const tables = extractTablesAndHeaders(uncommented);
     const obj = {};
     Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables); });
-    if (!silent && Object.keys.length === 0) throw new Error('No tables to parse');
-    if (unpack && Object.keys.length === 1) return obj[obj.keys()[0]];
+    if (!silent && Object.keys(obj).length === 0) throw new Error('No tables to parse');
+    if (unpack && Object.keys(obj).length === 1) return obj[Object.keys(obj)[0]];
     return obj;
   },
   // Function takes markdow file and returns every table as JSON.
