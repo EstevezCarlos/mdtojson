@@ -1,4 +1,5 @@
 import mttj from '../dist/app.js';
+import fs from 'fs';
 
 const md00 = `
 # Header
@@ -100,3 +101,16 @@ console.log('objF04:', objF04)
 console.log(JSON.stringify(objF03) == JSON.stringify(objS03b));
 console.log(JSON.stringify(objF03c) == JSON.stringify(objS03c));
 console.log(JSON.stringify(objF04) == JSON.stringify(objS04));
+
+
+
+const jsonString = JSON.stringify(objS01);
+
+fs.writeFile('myjsonfile.json', jsonString, 'utf8', (err) => {
+  if (err) {
+    console.log('An error occured while writing JSON Object to File.');
+    return console.log(err);
+  }
+ 
+  console.log('JSON file has been saved.');
+});
