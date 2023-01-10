@@ -2,21 +2,185 @@
 **M**arkdown **T**able **T**o **J**SON
 
 ## What does it do?
-MTTJ takes markdown file or script and convert it to JavaScript object.
 
-## Why?
-Because sometimes replicability is more important than scalability.
-Not every web app needs to be big.
-Not every company needs to maintain database.
+MTTJ takes markdown table and convert it to list of JavaScript objects:
 
-## To do..
-- create async file read method
-- create filter method
-- make optional type interpretation
+```markdown
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+```
 
-## Patch Notes
+🔽🔽🔽
+
+```json
+[
+  { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' },
+  { 'Column 1': 'Cell 4', 'Column 2': 'Cell 5', 'Column 3': 'Cell 6' }
+]
+```
+
+Now you can sanely create content rich website, without need to maintain a database.
+
+**Disclaimer** 
+
+MTTJ is not intended to create dynamic website. It only allows one way communication. To create dynamic website you need a database.
+
+## Installation
+
+As for now MTTJ is only available as node package.
+
+```bash
+npm i mttj
+```
+
+## Usage
+
+**Read markdown string**
+
+file.js
+
+```js
+import mttj from 'mttj'
+
+const md = `
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+`;
+
+const obj = mttj.parseString(md)
+
+console.log(obj)
+```
+
+expected output
+
+```bash
+[
+  { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' },
+  { 'Column 1': 'Cell 4', 'Column 2': 'Cell 5', 'Column 3': 'Cell 6' }
+]
+```
+
+**Read markdown file**
+
+file.md
+
+```markdown
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+```
+
+file.js
+
+```js
+import mttj from 'mttj'
+
+const obj = mttj.parseFileSync('file.md')
+console.log(obj)
+```
+
+output
+
+```bash
+[
+  { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' },
+  { 'Column 1': 'Cell 4', 'Column 2': 'Cell 5', 'Column 3': 'Cell 6' }
+]
+```
+
+**Multiple tables**
+
+Reading string/file containing multiple tables result in creating object, containing data in separate keys.
+Keys are created based on preceding headers. If there is no header present, key will be `table_$`
+Keys are in URL safe format.
+
+file.md
+
+```markdown
+# Header
+
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+
+# Another header
+
+| a   | b   |
+| --- | --- |
+| a1  | b1  |
+| a2  | b2  |
+
+| one | two | three |
+| --- | --- | ----- |
+| qwe | rty | uio   |
+| asd | fgh | jkl   |
+| zxc | vbn | m     |
+
+```
+
+file.js
+
+```js
+import mttj from 'mttj'
+
+const obj = mttj.parseFileSync('file.md')
+console.log(obj)
+```
+
+output
+
+```bash
+{
+  header: [
+    {
+      'Column 1': 'Cell 1',
+      'Column 2': 'Cell 2',
+      'Column 3': 'Cell 3'
+    },
+    {
+      'Column 1': 'Cell 4',
+      'Column 2': 'Cell 5',
+      'Column 3': 'Cell 6'
+    }
+  ],
+  another_header: [ { a: 'a1', b: 'b1' }, { a: 'a2', b: 'b2' } ],
+  table_1: [
+    { one: 'qwe', two: 'rty', three: 'uio' },
+    { one: 'asd', two: 'fgh', three: 'jkl' },
+    { one: 'zxc', two: 'vbn', three: 'm' }
+  ]
+}
+```
+
+## Technical details
+
+### Plans
+
+- Flags as single object argument. 
+- Method to read files in `async` manner
+- Filter method (similar to MySql `where` statement )
+- Optional type interpretation
+- Python module with similar use
+
+### Patch Notes
+
+v 0.1.10
+
+- Much more detailed README.md
+
 v 0.1.9
 - Comments `<!--  -->` are removed before processing
 - By default markdown with single table is unpacked
 - By default table with single row is unpacked
 - Fixed some minor bugs
+
+v 0.1.8
+
+- Minimum value product
