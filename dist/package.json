@@ -1,6 +1,6 @@
 {
   "name": "mttj",
-  "version": "0.1.10b",
+  "version": "0.1.11",
   "description": "Parse tables in Markdown file to JSON.",
   "main": "app.js",
   "scripts": {
@@ -17,12 +17,8 @@
   ],
   "author": "Chuck Cartwright",
   "license": "GPL-3.0-only",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/EstevezCarlos/mdtojson/issues"
   },
-  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme",
-  "dependencies": {
-    "fs": "^0.0.1-security"
-  }
+  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme"
 }

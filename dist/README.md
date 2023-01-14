@@ -37,12 +37,13 @@ npm i mttj
 
 ## Usage
 
+### Basics
 **Read markdown string**
 
 file.js
 
 ```js
-import mttj from 'mttj'
+const mttj = require('mttj')
 
 const md = `
 | Column 1 | Column 2 | Column 3 |
@@ -79,7 +80,7 @@ file.md
 file.js
 
 ```js
-import mttj from 'mttj'
+const mttj = require('mttj')
 
 const obj = mttj.parseFileSync('file.md')
 console.log(obj)
@@ -128,7 +129,7 @@ file.md
 file.js
 
 ```js
-import mttj from 'mttj'
+const mttj = require('mttj')
 
 const obj = mttj.parseFileSync('file.md')
 console.log(obj)
@@ -159,17 +160,84 @@ output
 }
 ```
 
+### Flags
+Flags modify `parseFileSync` and `parseString` behavior. Flags are second argument in both functions - pass it as object.
+
+**unpack**
+
+Default value `true`. If `true` and there is only one table in markdown, returns array of rows.
+
+file.md
+
+```markdown
+# Header
+
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+```
+
+file.js
+
+```js
+const mttj = require('mttj')
+
+console.log(
+    '\n---------------- false ----------------\n',
+    mttj.parseFileSync('file.md',{unpack:false}),
+    '\n------------ true (default) -----------\n',
+    mttj.parseFileSync('file.md',{unpack:true})
+)
+```
+
+output
+
+```bash
+ {
+  header: [
+    {
+      'Column 1': 'Cell 1',
+      'Column 2': 'Cell 2',
+      'Column 3': 'Cell 3'
+    },
+    {
+      'Column 1': 'Cell 4',
+      'Column 2': 'Cell 5',
+      'Column 3': 'Cell 6'
+    }
+  ]
+}
+------------ true (default) -----------
+ [
+  { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' },
+  { 'Column 1': 'Cell 4', 'Column 2': 'Cell 5', 'Column 3': 'Cell 6' }
+]
+```
+
+**unpackTables**
+
+Default value `true`. If `true` and there is only one row in table returns array as JSON, not array.
+
+
 ## Technical details
 
 ### Plans
 
-- Flags as single object argument. 
 - Method to read files in `async` manner
-- Filter method (similar to MySql `where` statement )
+- Filter flag (similar to MySql `where` statement )
+- Select specific colums flag (similar ro MySql `select`)
+- Column flag (similar to MySql `from`)
+- Table flag (select specific table)
+- First flag (select only first `n` tables)
+- Limit flag (select only first `n` rows of each table)
 - Optional type interpretation
 - Python module with similar use
 
 ### Patch Notes
+v 0.1.11
+- Fixed `require('mttj')` bug.
+- Added flags to `parseFileSync` and `parseString` methods.
 
 v 0.1.10
 
