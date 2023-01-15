@@ -1,12 +1,12 @@
 const fs = require('node:fs')
 
-const countTables		=	(md)			=>	(arr => arr === null ? 0 : arr.length)(md.match(/^\s*\|.*\|\s*$(?:(?:.|\n)*?)^\s*$/gm));
-const ceilToPowOf10		=	(i, pow = 0)	=>	i < (10 ** pow) ? pow : ceilToPowOf10(i, pow + 1)
-const removeComments	=	(md)			=>	`\n${md.replace(/<!--[\s\S]*?-->/g, '').replace('<!--', '')}\n`
+const rmComments	=	(md)	=>	`\n${md.replace(/<!--[\s\S]*?-->/g, '').replace('<!--', '')}\n`
+const countTables	=	(md)	=>	(arr => arr === null ? 0 : arr.length)(md.match(/^\s*\|.*\|\s*$(?:(?:.|\n)*?)^\s*$/gm));
+const padLength		=	(i)		=>	i.toString.length
 
 const extractTablesAndHeaders = (md) => {
 	const lines = md.split('\n')
-	const tableNumberLength = ceilToPowOf10(countTables(md));
+	const tableNumberLength = padLength(countTables(md));
 	const tables = {};
 	let inTable = false;
 	let currentTable = '';
@@ -57,7 +57,7 @@ const mttj = {
 	defaultFlags: {
 		unpack: true,
 		unpackTables: true,
-		silent: true,
+		strict: false,
 	}
 	// Function takes markdow string and returns every table as JSON.
 	// if there is no tables and silent == false, throws error
@@ -65,13 +65,12 @@ const mttj = {
 	// else, return JSON containg multiple objects
 	// each array containing only one element is unpacked
 	,parseString(md, flags) {
-		const { unpack = true, unpackTables = true, silent = true } = { ...this.defaultFlags, ...flags };
-		console.log(unpackTables);
-		const uncommented = removeComments(md);
+		const { unpack, unpackTables, strict } = { ...this.defaultFlags, ...flags };
+		const uncommented = rmComments(md);
 		const tables = extractTablesAndHeaders(uncommented);
 		const obj = {};
 		Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables); });
-		if (!silent && Object.keys(obj).length === 0) throw new Error('No tables to parse');
+		if (strict && Object.keys(obj).length === 0) throw new Error('No tables to parse');
 		if (unpack && Object.keys(obj).length === 1) return obj[Object.keys(obj)[0]];
 		return obj;
 	}

@@ -219,6 +219,41 @@ output
 
 Default value `true`. If `true` and there is only one row in table returns array as JSON, not array.
 
+file.md
+
+```markdown
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+```
+
+file.js
+
+```js
+const mttj = require('mttj')
+
+console.log(
+    '\n---------------- false ----------------\n',
+    mttj.parseFileSync('file.md',{unpackTables:false}),
+    '\n------------ true (default) -----------\n',
+    mttj.parseFileSync('file.md',{unpackTables:true})
+)
+```
+
+output
+
+```bash
+---------------- false ----------------
+ [
+  { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' }
+]
+------------ true (default) -----------
+ { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' }
+```
+
+
+
+
 
 ## Technical details
 
