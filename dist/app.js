@@ -48,7 +48,6 @@ const tableToJson = (table, unpackTables = true) => {
 	}
 	data.push(rowData);
 	}
-	console.log(unpackTables, data.length);
 	if (unpackTables && data.length === 1) return data[0];
 	return data;
 };

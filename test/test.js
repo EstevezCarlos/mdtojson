@@ -9,17 +9,18 @@ const md_path	=	'./md/'
 
 for (let i = 0; i < strings.md.length; i++) {
 
+	console.log('--------------------------------')
+
 	const padLength	=	strings.md.length.toString.length
 	const ii		=	''.padStart(padLength, 0) + i
-	console.log(ii);
 	const str_json	=	JSON.stringify(mttj.parseString(strings.md[i]))
 	const file_json	=	JSON.stringify(mttj.parseFileSync(md_path + ii + '.md'))
 	const beauty	=	beautify.js(str_json)
 
 	console.log(`Test ${i}:`,str_json == file_json)
-	console.log('--------------------------------')
-	console.log(`Writing to:\nlog/${ii}.json\n`)
+	console.log(`Writing log to: log/${ii}.json`)
 	fs.writeFileSync(`log/${ii}.json`,beauty)
+
 	console.log('--------------------------------')
 
 	
