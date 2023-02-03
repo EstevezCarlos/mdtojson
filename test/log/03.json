@@ -1,9 +1,11 @@
-[{
-    "Column 1": "Cell 1",
-    "Column 2": "Cell 2",
-    "Column 3": "Cell 3"
-}, {
-    "Column 1": "Cell 4",
-    "Column 2": "Cell 5",
-    "Column 3": "Cell 6"
-}]
+{
+    "table_1": [{
+        "Column 1": "Cell 1",
+        "Column 2": "Cell 2",
+        "Column 3": "Cell 3"
+    }, {
+        "Column 1": "Cell 4",
+        "Column 2": "Cell 5",
+        "Column 3": "Cell 6"
+    }]
+}

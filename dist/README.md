@@ -165,7 +165,7 @@ Flags modify `parseFileSync` and `parseString` behavior. Flags are second argume
 
 **unpack**
 
-Default value `true`. If `true` and there is only one table in markdown, returns array of rows.
+Default value `false`. If `true` and there is only one table in markdown, returns array of rows.
 
 file.md
 
@@ -184,9 +184,9 @@ file.js
 const mttj = require('mttj')
 
 console.log(
-    '\n---------------- false ----------------\n',
+    '\n------- false(default) -------\n',
     mttj.parseFileSync('file.md',{unpack:false}),
-    '\n------------ true (default) -----------\n',
+    '\n------------ true ------------\n',
     mttj.parseFileSync('file.md',{unpack:true})
 )
 ```
@@ -208,7 +208,7 @@ output
     }
   ]
 }
------------- true (default) -----------
+------------ true ------------
  [
   { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' },
   { 'Column 1': 'Cell 4', 'Column 2': 'Cell 5', 'Column 3': 'Cell 6' }
@@ -217,7 +217,7 @@ output
 
 **unpackTables**
 
-Default value `true`. If `true` and there is only one row in table returns array as JSON, not array.
+Default value `false`. If `true` and there is only one row in table returns array as JSON, not array.
 
 file.md
 
@@ -233,9 +233,9 @@ file.js
 const mttj = require('mttj')
 
 console.log(
-    '\n---------------- false ----------------\n',
+    '\n------- false(default) -------\n',
     mttj.parseFileSync('file.md',{unpackTables:false}),
-    '\n------------ true (default) -----------\n',
+    '\n------------ true ------------\n',
     mttj.parseFileSync('file.md',{unpackTables:true})
 )
 ```
@@ -243,13 +243,66 @@ console.log(
 output
 
 ```bash
----------------- false ----------------
+------- false(default) -------
  [
   { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' }
 ]
------------- true (default) -----------
+------------ true ------------
  { 'Column 1': 'Cell 1', 'Column 2': 'Cell 2', 'Column 3': 'Cell 3' }
 ```
+
+**rawInlines**
+
+Default value `false`. If `false` compile inline markdown tags to html. This includes `<strong>`,`<em>`,`<code>`,`<a>`,`<del>`. 
+
+file.md
+
+```markdown
+| Column 1                       | Column 2 |
+| ------------------------------ | -------- |
+| **Cell 1**                     | *Cell 2* |
+| [537 275 123](tel:537 275 123) | `x=3`    |
+```
+
+file.js
+
+```js
+const mttj = require('mttj')
+
+console.log(
+    '\n------- false(default) -------\n',
+    mttj.parseFileSync('file.md',{rawInlines:false}),
+    '\n------------ true ------------\n',
+    mttj.parseFileSync('file.md',{rawInlines:true})
+)
+```
+
+output
+
+```bash
+------- false(default) -------
+{
+    "table_1": [{
+        "Column 1": "<strong>Cell 1</strong>",
+        "Column 2": "<em>Cell 2</em>"
+    }, {
+        "Column 1": "<a href=\"tel:537 275 123\">537 275 123</a>",
+        "Column 2": "<code>x=3</code>"
+    }]
+}
+------------ true ------------
+{
+    "table_1": [{
+        "Column 1": "**Cell 1**",
+        "Column 2": "*Cell 2*"
+    }, {
+        "Column 1": "[537 275 123](tel:537 275 123)",
+        "Column 2": "`x=3`"
+    }]
+}
+```
+
+
 
 
 

@@ -52,11 +52,31 @@ const tableToJson = (table, unpackTables = true) => {
 	return data;
 };
 
+const λ = ( variable, ...funs ) => {
+	let out = variable
+	for (const fun of funs) {
+		out = fun(out)
+	}
+	return out
+}
+
+const compile_inlines = [
+	text	=>	text.replace(	/\[([^\[]+)\]\(([^\)]+)\)/g,	'<a href="$2">$1</a>'	)
+	,text	=>	text.replace(	/\*\*([^*]+)\*\*/g,				'<strong>$1</strong>'	)
+	,text	=>	text.replace(	/\*([^*]+)\*/g,					'<em>$1</em>'			)
+	,text	=>	text.replace(	/`([^`]+)`/g,					'<code>$1</code>'		)
+	,text	=>	text.replace(	/~~([^~]+)~~/g, 				'<del>$1</del>'			)
+]
+
+
+
+
 const mttj = {
 	defaultFlags: {
-		unpack: true,
-		unpackTables: true,
-		strict: false,
+		unpack:			false,
+		unpackTables:	false,
+		strict:			false,
+		rawInlines:		false
 	}
 	// Function takes markdow string and returns every table as JSON.
 	// if there is no tables and silent == false, throws error
@@ -64,9 +84,10 @@ const mttj = {
 	// else, return JSON containg multiple objects
 	// each array containing only one element is unpacked
 	,parseString(md, flags) {
-		const { unpack, unpackTables, strict } = { ...this.defaultFlags, ...flags };
+		const { unpack, unpackTables, strict,rawInlines } = { ...this.defaultFlags, ...flags };
 		const uncommented = rmComments(md);
-		const tables = extractTablesAndHeaders(uncommented);
+		const compiledInlines = !rawInlines ? λ(uncommented,...compile_inlines) : uncommented
+		const tables = extractTablesAndHeaders(compiledInlines);
 		const obj = {};
 		Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables); });
 		if (strict && Object.keys(obj).length === 0) throw new Error('No tables to parse');

@@ -85,6 +85,16 @@ const md = [`
 | asd | fgh | jkl   |
 | zxc | vbn | m     |
 `
+
+,
+
+`| Column 1                       | Column 2 |
+| ------------------------------ | -------- |
+| **Cell 1**                     | *Cell 2* |
+| [537 275 123](tel:537 275 123) | \`x=3\`    |
+
+`
+
 ]
 
 exports.md = md

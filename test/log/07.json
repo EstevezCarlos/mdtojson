@@ -1,0 +1,9 @@
+{
+    "table_1": [{
+        "Column 1": "<strong>Cell 1</strong>",
+        "Column 2": "<em>Cell 2</em>"
+    }, {
+        "Column 1": "<a href=\"tel:537 275 123\">537 275 123</a>",
+        "Column 2": "<code>x=3</code>"
+    }]
+}

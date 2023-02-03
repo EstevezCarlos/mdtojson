@@ -8,8 +8,8 @@
         "Column 2": "Cell 5",
         "Column 3": "Cell 6"
     }],
-    "another_header": {
+    "another_header": [{
         "Column 1": "Cell 1",
         "Column 2": "Cell 2"
-    }
+    }]
 }
