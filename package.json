@@ -1,5 +1,6 @@
 {
   "dependencies": {
     "js-beautify": "^1.14.7"
-  }
+  },
+  "version": "0.0.1"
 }
