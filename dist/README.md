@@ -323,6 +323,9 @@ output
 - Python module with similar use
 
 ### Patch Notes
+v 0.1.12
+- Added inlines compilation - disable with rawInlines flag
+
 v 0.1.11
 - Fixed `require('mttj')` bug.
 - Added flags to `parseFileSync` and `parseString` methods.
