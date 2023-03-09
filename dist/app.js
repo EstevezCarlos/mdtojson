@@ -4,6 +4,46 @@ const rmComments	=	(md)	=>	`\n${md.replace(/<!--[\s\S]*?-->/g, '').replace('<!--
 const countTables	=	(md)	=>	(arr => arr === null ? 0 : arr.length)(md.match(/^\s*\|.*\|\s*$(?:(?:.|\n)*?)^\s*$/gm));
 const padLength		=	(i)		=>	i.toString.length
 
+
+
+const applyRelations = (obj,k,v) => {
+	
+	const len	= k.length
+	const ext	= k.slice(len-2)
+	const key	= k.slice(0, len-2)
+	const table	= `${key}s`
+
+	if (ext != ' $')				return [k,v]
+	if (len < 3)					return [k,v]
+	if (!obj.hasOwnProperty(table))	return [k,v]
+	console.log('key:',k,'\ttable: ',table,'\text:',ext)
+	
+	for (const row of obj[table]) {
+		if (row.$ == v)				return [key,row]
+		else console.log(`\t\t${row.$}`);
+	}
+	return [k,v]
+
+}
+
+
+
+const postprocessing = (obj, fun) => {
+	for (const [_,table] of Object.entries(obj)) {
+		for (const row of table) {
+			for (const [k,v] of Object.entries(row)){
+
+				[newK,newV] = fun(obj,k,v)
+				row[newK] = newV
+				if (newK != k) delete row[k] 
+
+			}
+		}
+	}
+}
+
+
+
 const extractTablesAndHeaders = (md) => {
 	const lines = md.split('\n')
 	const tableNumberLength = padLength(countTables(md));
@@ -84,15 +124,16 @@ const mttj = {
 	// else, return JSON containg multiple objects
 	// each array containing only one element is unpacked
 	,parseString(md, flags) {
-		const { unpack, unpackTables, strict,rawInlines } = { ...this.defaultFlags, ...flags };
-		const uncommented = rmComments(md);
+		const { unpack, unpackTables, strict,rawInlines } = { ...this.defaultFlags, ...flags }
+		const uncommented = rmComments(md)
 		const compiledInlines = !rawInlines ? λ(uncommented,...compile_inlines) : uncommented
-		const tables = extractTablesAndHeaders(compiledInlines);
-		const obj = {};
-		Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables); });
-		if (strict && Object.keys(obj).length === 0) throw new Error('No tables to parse');
-		if (unpack && Object.keys(obj).length === 1) return obj[Object.keys(obj)[0]];
-		return obj;
+		const tables = extractTablesAndHeaders(compiledInlines)
+		const obj = {}
+		Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables) })
+		if (strict && Object.keys(obj).length === 0) throw new Error('No tables to parse')
+		if (unpack && Object.keys(obj).length === 1) return obj[Object.keys(obj)[0]]
+		if (true) postprocessing(obj, applyRelations)
+		return obj
 	}
 	// Function takes markdow file and returns every table as JSON.
 	// if there is no tables and silent == false, throws error
@@ -101,10 +142,12 @@ const mttj = {
 	// encoding and spread params are used by fs to read a file
 	// each array containing only one element is unpacked
 	,parseFileSync(file, flags, encoding = 'utf8', ...params) {
-		flags = { ...this.defaultFlags, ...flags };
-		const markdown = fs.readFileSync(file, encoding, ...params);
-		return this.parseString(markdown, flags);
-	},
+		flags = { ...this.defaultFlags, ...flags }
+		const markdown = fs.readFileSync(file, encoding, ...params)
+		return this.parseString(markdown, flags)
+	}
+	
+
 };
 
 

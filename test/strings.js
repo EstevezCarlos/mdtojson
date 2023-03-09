@@ -95,6 +95,23 @@ const md = [`
 
 `
 
+,
+
+`# Course
+
+| $    | name        | employee $ |
+| ---- | ----------- | ---------- |
+| bass | Bass Guitar | flea       |
+| key  | Keyboard    | flake      |
+
+# Employees
+
+| $     | name      | surname |
+| ----- | --------- | ------- |
+| flea  | Michael   | Balzary |
+| flake | Christian | Lorenz  |
+`
+
 ]
 
 exports.md = md

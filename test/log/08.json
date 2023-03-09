@@ -1,0 +1,28 @@
+{
+    "course": [{
+        "$": "bass",
+        "name": "Bass Guitar",
+        "employee": {
+            "$": "flea",
+            "name": "Michael",
+            "surname": "Balzary"
+        }
+    }, {
+        "$": "key",
+        "name": "Keyboard",
+        "employee": {
+            "$": "flake",
+            "name": "Christian",
+            "surname": "Lorenz"
+        }
+    }],
+    "employees": [{
+        "$": "flea",
+        "name": "Michael",
+        "surname": "Balzary"
+    }, {
+        "$": "flake",
+        "name": "Christian",
+        "surname": "Lorenz"
+    }]
+}
