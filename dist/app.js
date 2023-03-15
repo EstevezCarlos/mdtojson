@@ -1,4 +1,15 @@
-const fs = require('node:fs')
+const fs			=	require('node:fs')
+const path			=	require('path')
+
+
+const markdownIt	=	require('markdown-it')
+const highlightjs	=	require('markdown-it-highlightjs')
+const meta			=	require('markdown-it-meta')
+const mdIt			=	markdownIt({breaks: true, html: true})
+		.use(highlightjs, {inline:true})
+		.use(meta)
+const readMd		=	path => fs.existsSync(path) ? fs.readFileSync(path).toString() : '???'
+
 
 const rmComments	=	(md)	=>	`\n${md.replace(/<!--[\s\S]*?-->/g, '').replace('<!--', '')}\n`
 const countTables	=	(md)	=>	(arr => arr === null ? 0 : arr.length)(md.match(/^\s*\|.*\|\s*$(?:(?:.|\n)*?)^\s*$/gm));
@@ -100,7 +111,7 @@ const λ = ( variable, ...funs ) => {
 	return out
 }
 
-const compile_inlines = [
+const compileInlines = [
 	text	=>	text.replace(	/\[([^\[]+)\]\(([^\)]+)\)/g,	'<a href="$2">$1</a>'	)
 	,text	=>	text.replace(	/\*\*([^*]+)\*\*/g,				'<strong>$1</strong>'	)
 	,text	=>	text.replace(	/\*([^*]+)\*/g,					'<em>$1</em>'			)
@@ -108,6 +119,23 @@ const compile_inlines = [
 	,text	=>	text.replace(	/~~([^~]+)~~/g, 				'<del>$1</del>'			)
 ]
 
+
+// const injectItemToRow = (row,item) => {
+// 	const {k,v} = item
+// 	if (!row.hasOwnProperty(k)) row[k] == v
+// }
+const findRowI = (table,$) => {
+	console.log(table);
+	if (!table[0].hasOwnProperty('$')) return
+	for (let i = 0; i < table.length; i++) {
+		if(table[i].$ == $)	return i
+	}
+	return
+}
+
+// const findTable = (obj,k) => {
+// 	return obj[k]
+// }
 
 
 
@@ -118,6 +146,9 @@ const mttj = {
 		strict:			false,
 		rawInlines:		false
 	}
+
+
+
 	// Function takes markdow string and returns every table as JSON.
 	// if there is no tables and silent == false, throws error
 	// else if there is only one table, and unpack == true, returns processed table
@@ -126,7 +157,7 @@ const mttj = {
 	,parseString(md, flags) {
 		const { unpack, unpackTables, strict,rawInlines } = { ...this.defaultFlags, ...flags }
 		const uncommented = rmComments(md)
-		const compiledInlines = !rawInlines ? λ(uncommented,...compile_inlines) : uncommented
+		const compiledInlines = !rawInlines ? λ(uncommented,...compileInlines) : uncommented
 		const tables = extractTablesAndHeaders(compiledInlines)
 		const obj = {}
 		Object.keys(tables).forEach((key) => { obj[key] = tableToJson(tables[key], unpackTables) })
@@ -135,6 +166,9 @@ const mttj = {
 		if (true) postprocessing(obj, applyRelations)
 		return obj
 	}
+
+
+
 	// Function takes markdow file and returns every table as JSON.
 	// if there is no tables and silent == false, throws error
 	// else if there is only one table, and unpack == true, returns processed table
@@ -146,9 +180,76 @@ const mttj = {
 		const markdown = fs.readFileSync(file, encoding, ...params)
 		return this.parseString(markdown, flags)
 	}
-	
 
-};
+
+	//Description
+	,parseDirSync(dir, flags, encoding = 'utf8', ...params){
+		flags			= { ...this.defaultFlags, ...flags }
+		const markdown	= fs.readFileSync(`${dir}/$.md`, encoding, ...params)
+		const files		= fs.readdirSync(dir)
+		let obj			= {};
+		for (const outDir of files) {
+			if (outDir == '$.md'){
+				const localObj = this.parseFileSync(`${dir}/$.md`, flags)
+				obj = {...localObj, ...obj}
+			}
+
+
+
+
+
+
+
+			else {
+
+				const outPath = `${dir}/${outDir}`
+				if (fs.lstatSync(outPath).isDirectory()) {
+
+					// console.log(outDir)
+					for (const inDir of fs.readdirSync(outPath)) {
+				
+						// console.log('\t',inDir)
+						const inPath = `${outPath}/${inDir}`
+						if (fs.lstatSync(inPath).isDirectory())
+						for (const file of fs.readdirSync(inPath)) {
+							if (file.endsWith('.md')){
+								const fileName = path.parse(file).name
+								const corePath = `${inPath}/${file}`
+								// console.log(`\t\t${fileName}`);
+								// console.log('obj:',obj);
+								// console.log('outDir:',outDir);
+								// console.log(`obj[outDir]: ${obj[outDir]}`);
+								const i = findRowI(obj[outDir],inDir)
+								obj[outDir][i][fileName] = mdIt.render(readMd(corePath))
+							}
+						}
+
+					}
+				}
+			}
+
+
+
+
+
+
+
+
+
+		}
+		// let ret = markdown
+		// for (const f of files) {
+		// 	if (f.endsWith('.md') && key != '$') {
+		// 		ret += `${key}: ${md.render(readMd(f))}`
+		// 	}
+		// 	if (f.isDirectory()) {
+		// 		ret += this.parseDirSync(f)
+		// 	}
+		// }
+		if (true) postprocessing(obj, applyRelations)
+		return obj
+	}
+}
 
 
 module.exports = mttj

@@ -1,0 +1,34 @@
+{
+    "courses": [{
+        "$": "bass",
+        "name": "Bass Guitar",
+        "employee": {
+            "$": "flea",
+            "name": "Michael",
+            "surname": "Balzary",
+            "content": "<p>Cocreator and bass player in Red Hot Chili Peppers. ✡</p>\n"
+        },
+        "content": "<p>Smash that bass babe.</p>\n"
+    }, {
+        "$": "key",
+        "name": "Keyboard",
+        "employee": {
+            "$": "flake",
+            "name": "Christian",
+            "surname": "Lorenz",
+            "content": "<p>Plays in Rammstein</p>\n"
+        },
+        "content": "<p>Learn to play Keyboard.</p>\n"
+    }],
+    "employees": [{
+        "$": "flea",
+        "name": "Michael",
+        "surname": "Balzary",
+        "content": "<p>Cocreator and bass player in Red Hot Chili Peppers. ✡</p>\n"
+    }, {
+        "$": "flake",
+        "name": "Christian",
+        "surname": "Lorenz",
+        "content": "<p>Plays in Rammstein</p>\n"
+    }]
+}

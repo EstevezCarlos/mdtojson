@@ -26,3 +26,8 @@ for (let i = 0; i < strings.md.length; i++) {
 	
 }
 
+
+const str_json	=	JSON.stringify(mttj.parseDirSync('./md/model'))
+const beauty	=	beautify.js(str_json)
+console.log(`Writing log to: log/model.json`)
+fs.writeFileSync(`log/model.json`,beauty)
