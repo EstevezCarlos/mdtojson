@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/EstevezCarlos/mdtojson/issues"
   },
-  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme"
+  "homepage": "https://github.com/EstevezCarlos/mdtojson#readme",
+  "dependencies": {
+    "markdown-it": "^13.0.1",
+    "markdown-it-highlightjs": "^4.0.1",
+    "markdown-it-meta": "^0.0.1"
+  }
 }
