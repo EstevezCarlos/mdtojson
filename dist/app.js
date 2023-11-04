@@ -225,9 +225,9 @@ const mttj = {
                                         const i = findRowI(obj[outDir], inDir)
                                         obj[outDir][i][fileName] = mdIt.render(readMd(corePath))
                                     } catch (error) {
-                                        λ(`❌ cannot add ${file} to json`)
+                                        log(`❌ cannot add ${file} to json`)
                                     }
-                                    λ(file, 'added to json')
+                                    log(file, 'added to json')
                                 }
                             }
 
